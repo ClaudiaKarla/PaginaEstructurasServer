@@ -12,13 +12,14 @@ const User = require("../models/User.model");
 
 // Require necessary (isAuthenticated) middleware in order to control access to specific routes
 const { isAuthenticated } = require("../middleware/jwt.middleware.js");
+const AdminRegistro = require("../models/AdminRegistro.model");
 
 // How many rounds should bcrypt run the salt (default - 10 rounds)
 const saltRounds = 10;
 
 // POST /auth/signup  - Creates a new user in the database
 router.post("/signup", (req, res, next) => {
-  const { email, password, name } = req.body;
+  const { email, password, name } = req.body;0
 
   // Check if email or password or name are provided as empty strings
   if (email === "" || password === "" || name === "") {
@@ -44,10 +45,10 @@ router.post("/signup", (req, res, next) => {
   }
 
   // Check the users collection if a user with the same email already exists
-  User.findOne({ email })
-    .then((foundUser) => {
+  AdminRegistro.findOne({ email })
+    .then((foundAdminRegistro) => {
       // If the user with the same email already exists, send an error response
-      if (foundUser) {
+      if (foundAdminRegistro) {
         res.status(400).json({ message: "User already exists." });
         return;
       }
@@ -58,18 +59,18 @@ router.post("/signup", (req, res, next) => {
 
       // Create the new user in the database
       // We return a pending promise, which allows us to chain another `then`
-      return User.create({ email, password: hashedPassword, name });
+      return AdminRegistro.create({ email, password: hashedPassword, name });
     })
-    .then((createdUser) => {
+    .then((createdAdminRegistro) => {
       // Deconstruct the newly created user object to omit the password
       // We should never expose passwords publicly
-      const { email, name, _id } = createdUser;
+      const { email, name, _id } = createdAdminRegistro;
 
       // Create a new object that doesn't expose the password
-      const user = { email, name, _id };
+      const adminRegistro = { email, name, _id };
 
       // Send a json response containing the user object
-      res.status(201).json({ user: user });
+      res.status(201).json({ adminregistro: adminRegistro });
     })
     .catch((err) => next(err)); // In this case, we send error handling to the error handling middleware.
 });
@@ -85,7 +86,7 @@ router.post("/login", (req, res, next) => {
   }
 
   // Check the users collection if a user with the same email exists
-  User.findOne({ email })
+ AdminRegistro.findOne({ email })
     .then((foundUser) => {
       if (!foundUser) {
         // If the user is not found, send an error response

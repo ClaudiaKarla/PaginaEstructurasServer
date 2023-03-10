@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose");
 
 // TODO: Please make sure you edit the User model to whatever makes sense in this case
-const userSchema = new Schema(
+const inicioAdminSchema = new Schema(
   {
     email: {
       type: String,
@@ -11,10 +11,6 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Password is required."],
     },
-    name: {
-      type: String,
-      required: [true, "Name is required."],
-    },
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
@@ -22,6 +18,6 @@ const userSchema = new Schema(
   }
 );
 
-const User = model("User", userSchema);
+const InicioAdmin = model("InicioAdmin", inicioAdminSchema);
 
-module.exports = User;
+module.exports = InicioAdmin;
